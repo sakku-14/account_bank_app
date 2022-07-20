@@ -1,5 +1,7 @@
 import 'package:account_book_app/models/transaction.dart';
+import 'package:account_book_app/widgets/transaction_list.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(const MyApp());
@@ -45,6 +47,12 @@ class _MyHomePageState extends State<MyHomePage> {
     ),
   ];
 
+  _deleteTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((transaction) => transaction.id == id);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,22 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const Card(
               child: Text('Chart Space'),
             ),
-            Card(
-              child: ListTile(
-                leading: Text(_userTransactions[0].amount.toString()),
-                title: Text(_userTransactions[0].title),
-                subtitle: Text(_userTransactions[0].date.toString()),
-                trailing: const Icon(Icons.delete),
-              ),
-            ),
-            Card(
-              child: ListTile(
-                leading: Text(_userTransactions[1].amount.toString()),
-                title: Text(_userTransactions[1].title),
-                subtitle: Text(_userTransactions[1].date.toString()),
-                trailing: const Icon(Icons.delete),
-              ),
-            ),
+            TransactionList(_userTransactions, _deleteTransaction),
           ],
         ),
       ),
