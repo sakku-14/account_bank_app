@@ -1,7 +1,7 @@
 import 'package:account_book_app/models/transaction.dart';
+import 'package:account_book_app/widgets/new_transaction.dart';
 import 'package:account_book_app/widgets/transaction_list.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 void main() {
   runApp(const MyApp());
@@ -53,6 +53,18 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  _addNewTransaction(String title, double amount, DateTime date) {
+    final newTx = Transaction(
+      id: DateTime.now().toString(),
+      title: title,
+      amount: amount,
+      date: date,
+    );
+    setState(() {
+      _userTransactions.add(newTx);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,7 +89,18 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (_) {
+              return GestureDetector(
+                onTap: () {},
+                behavior: HitTestBehavior.opaque,
+                child: NewTransaction(_addNewTransaction),
+              );
+            },
+          );
+        },
         tooltip: 'Add transaction',
         child: const Icon(Icons.add),
       ),
