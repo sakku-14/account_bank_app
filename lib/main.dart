@@ -65,6 +65,19 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  _startAddNewTransaction(BuildContext ctx) {
+    return showModalBottomSheet(
+      context: ctx,
+      builder: (_) {
+        return GestureDetector(
+          onTap: () {},
+          behavior: HitTestBehavior.opaque,
+          child: NewTransaction(_addNewTransaction),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,18 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showModalBottomSheet(
-            context: context,
-            builder: (_) {
-              return GestureDetector(
-                onTap: () {},
-                behavior: HitTestBehavior.opaque,
-                child: NewTransaction(_addNewTransaction),
-              );
-            },
-          );
-        },
+        onPressed: () => _startAddNewTransaction(context),
         tooltip: 'Add transaction',
         child: const Icon(Icons.add),
       ),
