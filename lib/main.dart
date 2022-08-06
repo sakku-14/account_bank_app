@@ -16,7 +16,25 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Personal Expense',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.grey,
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.grey)
+            .copyWith(secondary: Colors.pinkAccent),
+        fontFamily: 'Quicksand',
+        textTheme: ThemeData.light().textTheme.copyWith(
+              button: const TextStyle(color: Colors.white),
+            ),
+        appBarTheme: AppBarTheme(
+          titleTextStyle: ThemeData.light()
+              .textTheme
+              .copyWith(
+                headline6: const TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+              .headline6,
+        ),
       ),
       home: const MyHomePage(title: 'Personal Expense'),
     );
@@ -113,6 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () => _startAddNewTransaction(context),
         tooltip: 'Add transaction',
         child: const Icon(Icons.add),
+        foregroundColor: Colors.white,
       ),
     );
   }
