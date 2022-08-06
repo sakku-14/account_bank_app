@@ -54,15 +54,57 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransactions = [
     Transaction(
       id: 't1',
-      title: 'New Shoes',
-      amount: 69.99,
+      title: 'Shoes',
+      amount: 50.3,
       date: DateTime.now(),
     ),
     Transaction(
       id: 't2',
-      title: 'Weekly Grocery',
-      amount: 16.53,
-      date: DateTime.now(),
+      title: 'Book',
+      amount: 16.3,
+      date: DateTime.now().subtract(const Duration(days: 1)),
+    ),
+    Transaction(
+      id: 't3',
+      title: 'Food',
+      amount: 10.8,
+      date: DateTime.now().subtract(const Duration(days: 2)),
+    ),
+    Transaction(
+      id: 't4',
+      title: 'Cloth',
+      amount: 104.2,
+      date: DateTime.now().subtract(const Duration(days: 3)),
+    ),
+    Transaction(
+      id: 't5',
+      title: 'Bike',
+      amount: 150.2,
+      date: DateTime.now().subtract(const Duration(days: 4)),
+    ),
+    Transaction(
+      id: 't6',
+      title: 'iPhone',
+      amount: 110.0,
+      date: DateTime.now().subtract(const Duration(days: 5)),
+    ),
+    Transaction(
+      id: 't7',
+      title: 'PC',
+      amount: 30.2,
+      date: DateTime.now().subtract(const Duration(days: 6)),
+    ),
+    Transaction(
+      id: 't8',
+      title: 'PC',
+      amount: 30.2,
+      date: DateTime.now().subtract(const Duration(days: 6)),
+    ),
+    Transaction(
+      id: 't9',
+      title: 'PC',
+      amount: 30.2,
+      date: DateTime.now().subtract(const Duration(days: 6)),
     ),
   ];
 
