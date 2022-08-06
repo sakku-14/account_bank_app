@@ -81,10 +81,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   List<Transaction> get _recentTransactions {
     var sevenDaysAgo = DateTime.now().subtract(Duration(days: 7));
-    var list = _userTransactions
+    return _userTransactions
         .where((element) => element.date.isAfter(sevenDaysAgo))
         .toList();
-    return list;
   }
 
   @override
@@ -102,7 +101,9 @@ class _MyHomePageState extends State<MyHomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
+            // チャート表示部
             Chart(_recentTransactions),
+            // トランザクションリスト表示部
             TransactionList(_userTransactions, _deleteTransaction),
           ],
         ),
