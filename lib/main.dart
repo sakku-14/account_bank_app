@@ -158,22 +158,32 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            // チャート表示部
-            Chart(_recentTransactions),
-            // トランザクションリスト表示部
-            TransactionList(_userTransactions, _deleteTransaction),
-          ],
-        ),
+      body: Column(
+        children: <Widget>[
+          // チャート表示部
+          Chart(_recentTransactions),
+          // トランザクションリスト表示部
+          SingleChildScrollView(
+            child: TransactionList(_userTransactions, _deleteTransaction),
+          ),
+        ],
       ),
+      // body: SingleChildScrollView(
+      //   child: Column(
+      //     children: <Widget>[
+      //       // チャート表示部
+      //       Chart(_recentTransactions),
+      //       // トランザクションリスト表示部
+      //       TransactionList(_userTransactions, _deleteTransaction),
+      //     ],
+      //   ),
+      // ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         onPressed: () => _startAddNewTransaction(context),
         tooltip: 'Add transaction',
-        child: const Icon(Icons.add),
         foregroundColor: Colors.white,
+        child: const Icon(Icons.add),
       ),
     );
   }
