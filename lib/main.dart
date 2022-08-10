@@ -139,6 +139,15 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  _isPortrait(BuildContext ctx) {
+    final size = MediaQuery.of(ctx).size;
+    if (size.width < size.height) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   List<Transaction> get _recentTransactions {
     var sevenDaysAgo = DateTime.now().subtract(Duration(days: 7));
     return _userTransactions
@@ -161,7 +170,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         children: <Widget>[
           // チャート表示部
-          Chart(_recentTransactions),
+          _isPortrait(context) ? Chart(_recentTransactions) : Container(),
           // トランザクションリスト表示部
           SingleChildScrollView(
             child: TransactionList(_userTransactions, _deleteTransaction),
