@@ -173,20 +173,14 @@ class _MyHomePageState extends State<MyHomePage> {
           _isPortrait(context) ? Chart(_recentTransactions) : Container(),
           // トランザクションリスト表示部
           SingleChildScrollView(
-            child: TransactionList(_userTransactions, _deleteTransaction),
+            child: TransactionList(
+              _userTransactions,
+              _deleteTransaction,
+              _isPortrait(context),
+            ),
           ),
         ],
       ),
-      // body: SingleChildScrollView(
-      //   child: Column(
-      //     children: <Widget>[
-      //       // チャート表示部
-      //       Chart(_recentTransactions),
-      //       // トランザクションリスト表示部
-      //       TransactionList(_userTransactions, _deleteTransaction),
-      //     ],
-      //   ),
-      // ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         onPressed: () => _startAddNewTransaction(context),
