@@ -157,6 +157,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final isLandscape = mediaQuery.orientation == Orientation.landscape;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Account Book App"),
@@ -170,13 +172,18 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         children: <Widget>[
           // チャート表示部
-          _isPortrait(context) ? Chart(_recentTransactions) : Container(),
+          isLandscape ? Container() : Chart(_recentTransactions),
           // トランザクションリスト表示部
-          SingleChildScrollView(
-            child: TransactionList(
-              _userTransactions,
-              _deleteTransaction,
-              _isPortrait(context),
+          Container(
+            height: (isLandscape
+                ? mediaQuery.size.height - AppBar().preferredSize.height
+                : mediaQuery.size.height * 0.6),
+            child: Expanded(
+              child: TransactionList(
+                _userTransactions,
+                _deleteTransaction,
+                isLandscape,
+              ),
             ),
           ),
         ],
