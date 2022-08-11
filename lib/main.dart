@@ -172,12 +172,25 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         children: <Widget>[
           // チャート表示部
-          isLandscape ? Container() : Chart(_recentTransactions),
+          isLandscape
+              ? Container()
+              : Container(
+                  height: (mediaQuery.size.height -
+                          AppBar().preferredSize.height -
+                          mediaQuery.padding.top) *
+                      0.3,
+                  child: Chart(_recentTransactions),
+                ),
           // トランザクションリスト表示部
           Container(
-            height: (isLandscape
-                ? mediaQuery.size.height - AppBar().preferredSize.height
-                : mediaQuery.size.height * 0.6),
+            height: isLandscape
+                ? mediaQuery.size.height -
+                    AppBar().preferredSize.height -
+                    mediaQuery.padding.top
+                : (mediaQuery.size.height -
+                        AppBar().preferredSize.height -
+                        mediaQuery.padding.top) *
+                    0.7,
             child: Expanded(
               child: TransactionList(
                 _userTransactions,
