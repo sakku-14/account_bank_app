@@ -139,17 +139,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  _isPortrait(BuildContext ctx) {
-    final size = MediaQuery.of(ctx).size;
-    if (size.width < size.height) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   List<Transaction> get _recentTransactions {
-    var sevenDaysAgo = DateTime.now().subtract(Duration(days: 7));
+    var sevenDaysAgo = DateTime.now().subtract(const Duration(days: 7));
     return _userTransactions
         .where((element) => element.date.isAfter(sevenDaysAgo))
         .toList();
@@ -191,12 +182,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         AppBar().preferredSize.height -
                         mediaQuery.padding.top) *
                     0.7,
-            child: Expanded(
-              child: TransactionList(
-                _userTransactions,
-                _deleteTransaction,
-                isLandscape,
-              ),
+            child: TransactionList(
+              _userTransactions,
+              _deleteTransaction,
+              isLandscape,
             ),
           ),
         ],
