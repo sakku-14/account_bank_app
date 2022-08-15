@@ -139,7 +139,7 @@ class _NewTransactionState extends State<NewTransaction> {
             ElevatedButton(
               onPressed: _submitData,
               child: const Text('Add Transaction'),
-            )
+            ),
           ],
         ),
       ),

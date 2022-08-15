@@ -150,46 +150,51 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final isLandscape = mediaQuery.orientation == Orientation.landscape;
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Account Book App"),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () {},
-          ),
-        ],
-      ),
-      body: Column(
-        children: <Widget>[
-          // チャート表示部
-          isLandscape
-              ? Container()
-              : Container(
-                  height: (mediaQuery.size.height -
-                          AppBar().preferredSize.height -
-                          mediaQuery.padding.top) *
-                      0.3,
-                  child: Chart(_recentTransactions),
-                ),
-          // トランザクションリスト表示部
-          Container(
-            height: isLandscape
-                ? mediaQuery.size.height -
-                    AppBar().preferredSize.height -
-                    mediaQuery.padding.top
-                : (mediaQuery.size.height -
+    // タイトルバー
+    final appBar = AppBar(
+      title: const Text("Account Book App"),
+      actions: <Widget>[
+        IconButton(
+          icon: const Icon(Icons.add),
+          onPressed: () {},
+        ),
+      ],
+    );
+    // メインコンテンツ
+    final appBody = Column(
+      children: <Widget>[
+        // チャート表示部
+        isLandscape
+            ? Container()
+            : Container(
+                height: (mediaQuery.size.height -
                         AppBar().preferredSize.height -
                         mediaQuery.padding.top) *
-                    0.7,
-            child: TransactionList(
-              _userTransactions,
-              _deleteTransaction,
-              isLandscape,
-            ),
+                    0.3,
+                child: Chart(_recentTransactions),
+              ),
+        // トランザクションリスト表示部
+        Container(
+          height: isLandscape
+              ? mediaQuery.size.height -
+                  AppBar().preferredSize.height -
+                  mediaQuery.padding.top
+              : (mediaQuery.size.height -
+                      AppBar().preferredSize.height -
+                      mediaQuery.padding.top) *
+                  0.7,
+          child: TransactionList(
+            _userTransactions,
+            _deleteTransaction,
+            isLandscape,
           ),
-        ],
-      ),
+        ),
+      ],
+    );
+
+    return Scaffold(
+      appBar: appBar,
+      body: appBody,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         onPressed: () => _startAddNewTransaction(context),
