@@ -83,63 +83,75 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
+    // 商品名入力欄
+    final itemTitle = SizedBox(
+      height: 60,
+      child: KeyboardActions(
+        config: _buildConfig(),
+        child: TextField(
+          focusNode: _nodeTitle,
+          decoration: const InputDecoration(labelText: 'Title'),
+          controller: _titleController,
+          onSubmitted: (_) => _submitData(),
+        ),
+      ),
+    );
+
+    // 商品金額入力欄
+    final itemAmount = SizedBox(
+      height: 60,
+      child: KeyboardActions(
+        config: _buildConfig(),
+        child: TextField(
+          focusNode: _nodeAmount,
+          keyboardType: TextInputType.number,
+          decoration: const InputDecoration(labelText: 'Amount'),
+          controller: _amountController,
+          onSubmitted: (_) => _submitData(),
+        ),
+      ),
+    );
+
+    // 日付選択ボタン
+    final purchaseDate = SizedBox(
+      height: 50,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Text(
+              _selectedDate == null
+                  ? 'No Date Chosen!'
+                  : 'Picked Date: ${DateFormat.yMd().format(_selectedDate!)}',
+            ),
+          ),
+          TextButton(
+            onPressed: _presentDatePicker,
+            child: const Text(
+              'Choose Date',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    // 登録ボタン
+    final registerButton = ElevatedButton(
+      onPressed: _submitData,
+      child: const Text('Add Transaction'),
+    );
+
     return Card(
       elevation: 5,
-      child: Container(
+      child: SizedBox(
         height: 400,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
-            Container(
-              height: 60,
-              child: KeyboardActions(
-                config: _buildConfig(),
-                child: TextField(
-                  focusNode: _nodeTitle,
-                  decoration: const InputDecoration(labelText: 'Title'),
-                  controller: _titleController,
-                  onSubmitted: (_) => _submitData(),
-                ),
-              ),
-            ),
-            Container(
-              height: 60,
-              child: KeyboardActions(
-                config: _buildConfig(),
-                child: TextField(
-                  focusNode: _nodeAmount,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(labelText: 'Amount'),
-                  controller: _amountController,
-                  onSubmitted: (_) => _submitData(),
-                ),
-              ),
-            ),
-            Container(
-              height: 50,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      _selectedDate == null
-                          ? 'No Date Chosen!'
-                          : 'Picked Date: ${DateFormat.yMd().format(_selectedDate!)}',
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: _presentDatePicker,
-                    child: const Text(
-                      'Choose Date',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            ElevatedButton(
-              onPressed: _submitData,
-              child: const Text('Add Transaction'),
-            ),
+            itemTitle,
+            itemAmount,
+            purchaseDate,
+            registerButton,
           ],
         ),
       ),
