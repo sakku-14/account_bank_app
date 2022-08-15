@@ -1,11 +1,6 @@
-import 'dart:ffi';
-
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:account_book_app/widgets/chart_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 import '../models/transaction.dart';
 
@@ -47,26 +42,29 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 一週間分のチャート部
+    final chartContents = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: daylyTransactionList.map((data) {
+        return Flexible(
+          fit: FlexFit.tight,
+          child: ChartBar(
+            data['day'].toString(),
+            double.parse(data['amount'].toString()),
+            totalSpending == 0.0
+                ? 0.0
+                : (data['amount'] as double) / totalSpending,
+          ),
+        );
+      }).toList(),
+    );
+
     return Card(
       elevation: 6,
-      margin: EdgeInsets.all(20),
+      margin: const EdgeInsets.all(20),
       child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: daylyTransactionList.map((data) {
-            return Flexible(
-              fit: FlexFit.tight,
-              child: ChartBar(
-                data['day'].toString(),
-                double.parse(data['amount'].toString()),
-                totalSpending == 0.0
-                    ? 0.0
-                    : (data['amount'] as double) / totalSpending,
-              ),
-            );
-          }).toList(),
-        ),
+        padding: const EdgeInsets.all(10),
+        child: chartContents,
       ),
     );
   }
