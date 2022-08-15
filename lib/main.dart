@@ -166,7 +166,7 @@ class _MyHomePageState extends State<MyHomePage> {
         // チャート表示部
         isLandscape
             ? Container()
-            : Container(
+            : SizedBox(
                 height: (mediaQuery.size.height -
                         AppBar().preferredSize.height -
                         mediaQuery.padding.top) *
@@ -174,7 +174,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Chart(_recentTransactions),
               ),
         // トランザクションリスト表示部
-        Container(
+        SizedBox(
           height: isLandscape
               ? mediaQuery.size.height -
                   AppBar().preferredSize.height -
