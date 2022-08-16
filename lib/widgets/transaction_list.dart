@@ -39,7 +39,15 @@ class TransactionList extends StatelessWidget {
   Widget showEmpty(BoxConstraints constraints) {
     return Column(
       children: <Widget>[
-        const Text('No Transaction'),
+        const Text(
+          'No Transaction',
+          style: TextStyle(
+            color: Colors.grey,
+            fontSize: 20,
+            fontWeight: FontWeight.normal,
+            decoration: TextDecoration.none,
+          ),
+        ),
         const SizedBox(
           height: 20,
         ),
@@ -61,6 +69,7 @@ class TransactionList extends StatelessWidget {
             return showEmpty(constraints);
           })
         : ListView.builder(
+            padding: const EdgeInsets.all(0),
             itemBuilder: (context, index) {
               return eachTransaction(index);
             },
