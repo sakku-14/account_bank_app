@@ -160,10 +160,16 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  double getTransactionListHeight(MediaQueryData mediaQuery, bool isPortrait,
+  double getTransactionListHeight(MediaQueryData mediaQuery, bool isLandscape,
       bool isIOS, double iosHeight, double androidHeight) {
-    if (isPortrait) {
-      if (isIOS) {
+    if (isLandscape) {
+      if (Platform.isIOS) {
+        return mediaQuery.size.height - iosHeight - mediaQuery.padding.top;
+      } else {
+        return mediaQuery.size.height - androidHeight - mediaQuery.padding.top;
+      }
+    } else {
+      if (Platform.isIOS) {
         return (mediaQuery.size.height - iosHeight - mediaQuery.padding.top) *
             0.7;
       } else {
@@ -172,13 +178,21 @@ class _MyHomePageState extends State<MyHomePage> {
                 mediaQuery.padding.top) *
             0.7;
       }
-    } else {
-      if (isIOS) {
-        return mediaQuery.size.width - iosHeight - mediaQuery.padding.top;
-      } else {
-        return mediaQuery.size.width - androidHeight - mediaQuery.padding.top;
-      }
     }
+  }
+
+  double getChartUpperSpace(MediaQueryData mediaQuery, bool isLandscape,
+      bool isIOS, double iosHeight, double androidHeight) {
+    double height = 0;
+    if (isIOS) {
+      height += iosHeight;
+    } else {
+      height += androidHeight;
+    }
+    if (!isLandscape) {
+      height += 20;
+    }
+    return height;
   }
 
   @override
@@ -203,39 +217,17 @@ class _MyHomePageState extends State<MyHomePage> {
     final appBarForAndroid = AppBar(
       title: const Text(titleName),
     );
-    double transactionListHeight() {
-      if (isLandscape) {
-        if (Platform.isIOS) {
-          return mediaQuery.size.height -
-              appBarForIOS.preferredSize.height -
-              mediaQuery.padding.top;
-        } else {
-          return mediaQuery.size.height -
-              appBarForAndroid.preferredSize.height -
-              mediaQuery.padding.top;
-        }
-      } else {
-        if (Platform.isIOS) {
-          return (mediaQuery.size.height -
-                  appBarForIOS.preferredSize.height -
-                  mediaQuery.padding.top) *
-              0.7;
-        } else {
-          return (mediaQuery.size.height -
-                  appBarForAndroid.preferredSize.height -
-                  mediaQuery.padding.top) *
-              0.7;
-        }
-      }
-    }
 
     // メインコンテンツ
     final appBody = Column(
       children: <Widget>[
         SizedBox(
-          height: Platform.isIOS
-              ? appBarForIOS.preferredSize.height + 20
-              : appBarForAndroid.preferredSize.height + 20,
+          height: getChartUpperSpace(
+              mediaQuery,
+              isLandscape,
+              Platform.isIOS,
+              appBarForIOS.preferredSize.height,
+              appBarForAndroid.preferredSize.height),
         ),
         // チャート表示部
         isLandscape
@@ -250,7 +242,12 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
         // トランザクションリスト表示部
         SizedBox(
-          height: transactionListHeight(),
+          height: getTransactionListHeight(
+              mediaQuery,
+              isLandscape,
+              Platform.isIOS,
+              appBarForIOS.preferredSize.height,
+              appBarForAndroid.preferredSize.height),
           child: TransactionList(
             _userTransactions,
             _deleteTransaction,
