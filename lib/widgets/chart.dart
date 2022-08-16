@@ -14,7 +14,7 @@ class Chart extends StatelessWidget {
     return List.generate(7, (index) {
       final formatOfDayOfWeek = DateFormat.E();
       final theDay = DateTime.now().subtract(Duration(days: index));
-      var dayAmount = 0.0;
+      var dayAmount = 0;
 
       for (var transaction in recentTransactions) {
         // 同じ曜日のみ集計
@@ -32,8 +32,8 @@ class Chart extends StatelessWidget {
     }).toList();
   }
 
-  double get totalSpending {
-    var total = 0.0;
+  int get totalSpending {
+    var total = 0;
     for (var transaction in recentTransactions) {
       total += transaction.amount;
     }
@@ -50,10 +50,8 @@ class Chart extends StatelessWidget {
           fit: FlexFit.tight,
           child: ChartBar(
             data['day'].toString(),
-            double.parse(data['amount'].toString()),
-            totalSpending == 0.0
-                ? 0.0
-                : (data['amount'] as double) / totalSpending,
+            int.parse(data['amount'].toString()),
+            totalSpending == 0 ? 0 : (data['amount'] as int) / totalSpending,
           ),
         );
       }).toList(),

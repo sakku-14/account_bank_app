@@ -11,6 +11,13 @@ class TransactionList extends StatelessWidget {
   const TransactionList(
       this.transactions, this.deleteTransaction, this.isLandscape);
 
+  String getShowAmount(int amount) {
+    if (amount / 1000 < 1) {
+      return amount.toString();
+    }
+    return '${amount / 1000}k';
+  }
+
   // 個別のトランザクション
   Widget eachTransaction(int index) {
     return Card(
@@ -18,10 +25,11 @@ class TransactionList extends StatelessWidget {
         leading: CircleAvatar(
           radius: 30,
           child: Padding(
-              padding: const EdgeInsets.all(6),
-              child: FittedBox(
-                child: Text(transactions[index].amount.toString()),
-              )),
+            padding: const EdgeInsets.all(6),
+            child: FittedBox(
+              child: Text(getShowAmount(transactions[index].amount)),
+            ),
+          ),
         ),
         title: Text(transactions[index].title),
         subtitle: Text(

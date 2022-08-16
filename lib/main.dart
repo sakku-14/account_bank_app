@@ -58,55 +58,55 @@ class _MyHomePageState extends State<MyHomePage> {
     Transaction(
       id: 't1',
       title: 'Shoes',
-      amount: 50.3,
+      amount: 5000,
       date: DateTime.now(),
     ),
     Transaction(
       id: 't2',
       title: 'Book',
-      amount: 16.3,
+      amount: 1600,
       date: DateTime.now().subtract(const Duration(days: 1)),
     ),
     Transaction(
       id: 't3',
       title: 'Food',
-      amount: 10.8,
+      amount: 1020,
       date: DateTime.now().subtract(const Duration(days: 2)),
     ),
     Transaction(
       id: 't4',
       title: 'Cloth',
-      amount: 104.2,
+      amount: 5030,
       date: DateTime.now().subtract(const Duration(days: 3)),
     ),
     Transaction(
       id: 't5',
       title: 'Bike',
-      amount: 150.2,
+      amount: 15000,
       date: DateTime.now().subtract(const Duration(days: 4)),
     ),
     Transaction(
       id: 't6',
       title: 'iPhone',
-      amount: 110.0,
+      amount: 21000,
       date: DateTime.now().subtract(const Duration(days: 5)),
     ),
     Transaction(
       id: 't7',
       title: 'PC',
-      amount: 30.2,
+      amount: 30000,
       date: DateTime.now().subtract(const Duration(days: 6)),
     ),
     Transaction(
       id: 't8',
       title: 'PC',
-      amount: 30.2,
+      amount: 250000,
       date: DateTime.now().subtract(const Duration(days: 6)),
     ),
     Transaction(
       id: 't9',
       title: 'PC',
-      amount: 30.2,
+      amount: 210000,
       date: DateTime.now().subtract(const Duration(days: 6)),
     ),
   ];
@@ -117,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  _addNewTransaction(String title, double amount, DateTime date) {
+  _addNewTransaction(String title, int amount, DateTime date) {
     final newTx = Transaction(
       id: DateTime.now().toString(),
       title: title,
@@ -185,10 +185,11 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final isLandscape = mediaQuery.orientation == Orientation.landscape;
+    const titleName = "１週間家計簿";
 
     // タイトルバー
     final appBarForIOS = CupertinoNavigationBar(
-      middle: const Text("Account Book App"),
+      middle: const Text(titleName),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -200,7 +201,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
     final appBarForAndroid = AppBar(
-      title: const Text("Account Book App"),
+      title: const Text(titleName),
     );
     double transactionListHeight() {
       if (isLandscape) {
