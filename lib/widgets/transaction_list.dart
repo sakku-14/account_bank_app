@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 import '../models/transaction.dart';
@@ -36,7 +37,7 @@ class TransactionList extends StatelessWidget {
         ),
         title: Text(transactions[index].title),
         subtitle: Text(
-          DateFormat.yMMMd().format(transactions[index].date),
+          DateFormat.yMMMd('ja').format(transactions[index].date),
         ),
         trailing: IconButton(
           onPressed: () => deleteTransaction(transactions[index].id),
