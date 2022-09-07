@@ -55,62 +55,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _userTransactions = [
-    Transaction(
-      id: 't1',
-      title: 'Shoes',
-      amount: 5000,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Book',
-      amount: 1600,
-      date: DateTime.now().subtract(const Duration(days: 1)),
-    ),
-    Transaction(
-      id: 't3',
-      title: 'Food',
-      amount: 1020,
-      date: DateTime.now().subtract(const Duration(days: 2)),
-    ),
-    Transaction(
-      id: 't4',
-      title: 'Cloth',
-      amount: 5030,
-      date: DateTime.now().subtract(const Duration(days: 3)),
-    ),
-    Transaction(
-      id: 't5',
-      title: 'Bike',
-      amount: 15000,
-      date: DateTime.now().subtract(const Duration(days: 4)),
-    ),
-    Transaction(
-      id: 't6',
-      title: 'iPhone',
-      amount: 21000,
-      date: DateTime.now().subtract(const Duration(days: 5)),
-    ),
-    Transaction(
-      id: 't7',
-      title: 'PC',
-      amount: 30000,
-      date: DateTime.now().subtract(const Duration(days: 6)),
-    ),
-    Transaction(
-      id: 't8',
-      title: 'PC',
-      amount: 250000,
-      date: DateTime.now().subtract(const Duration(days: 6)),
-    ),
-    Transaction(
-      id: 't9',
-      title: 'PC',
-      amount: 210000,
-      date: DateTime.now().subtract(const Duration(days: 6)),
-    ),
-  ];
+  final List<Transaction> _userTransactions = [];
 
   _deleteTransaction(String id) {
     setState(() {
