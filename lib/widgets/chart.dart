@@ -1,3 +1,4 @@
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:account_book_app/widgets/chart_bar.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,8 @@ class Chart extends StatelessWidget {
   // 曜日毎の消費金額を集計する
   List<Map<String, Object>> get daylyTransactionList {
     return List.generate(7, (index) {
-      final formatOfDayOfWeek = DateFormat.E();
+      initializeDateFormatting('ja');
+      final formatOfDayOfWeek = DateFormat.E('ja');
       final theDay = DateTime.now().subtract(Duration(days: index));
       var dayAmount = 0;
 
