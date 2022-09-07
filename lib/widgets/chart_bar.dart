@@ -11,6 +11,9 @@ class ChartBar extends StatelessWidget {
     if (spendingAmount / 1000 < 1) {
       return spendingAmount.toString();
     }
+    if (spendingAmount % 10000 == 0) {
+      return '${(spendingAmount / 10000).toStringAsFixed(0)}万';
+    }
     return '${(spendingAmount / 10000).toStringAsFixed(1)}万';
   }
 

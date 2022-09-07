@@ -15,7 +15,10 @@ class TransactionList extends StatelessWidget {
     if (amount / 1000 < 1) {
       return amount.toString();
     }
-    return '${amount / 1000}k';
+    if (amount % 10000 == 0) {
+      return '${(amount / 10000).toStringAsFixed(0)}万';
+    }
+    return '${(amount / 10000).toStringAsFixed(1)}万';
   }
 
   // 個別のトランザクション
