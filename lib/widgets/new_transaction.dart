@@ -35,6 +35,7 @@ class _NewTransactionState extends State<NewTransaction> {
   void _presentDatePicker() {
     FocusScope.of(context).unfocus();
     showDatePicker(
+      locale: const Locale('ja'),
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2022),
@@ -90,7 +91,7 @@ class _NewTransactionState extends State<NewTransaction> {
         config: _buildConfig(),
         child: TextField(
           focusNode: _nodeTitle,
-          decoration: const InputDecoration(labelText: 'Title'),
+          decoration: const InputDecoration(labelText: 'タイトル'),
           controller: _titleController,
           onSubmitted: (_) => _submitData(),
         ),
@@ -105,7 +106,7 @@ class _NewTransactionState extends State<NewTransaction> {
         child: TextField(
           focusNode: _nodeAmount,
           keyboardType: TextInputType.number,
-          decoration: const InputDecoration(labelText: 'Amount'),
+          decoration: const InputDecoration(labelText: '金額'),
           controller: _amountController,
           onSubmitted: (_) => _submitData(),
         ),
@@ -120,14 +121,14 @@ class _NewTransactionState extends State<NewTransaction> {
           Expanded(
             child: Text(
               _selectedDate == null
-                  ? 'No Date Chosen!'
-                  : 'Picked Date: ${DateFormat.yMd().format(_selectedDate!)}',
+                  ? '日付を選択してください'
+                  : '日付: ${DateFormat.yMd('ja').format(_selectedDate!)}',
             ),
           ),
           TextButton(
             onPressed: _presentDatePicker,
             child: const Text(
-              'Choose Date',
+              '日付を選択',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
@@ -138,7 +139,7 @@ class _NewTransactionState extends State<NewTransaction> {
     // 登録ボタン
     final registerButton = ElevatedButton(
       onPressed: _submitData,
-      child: const Text('Add Transaction'),
+      child: const Text('追加'),
     );
 
     return Card(
