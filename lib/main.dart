@@ -7,8 +7,14 @@ import 'package:account_book_app/widgets/transaction_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hive_flutter/adapters.dart';
 
-void main() {
+late Box transactionList;
+
+Future<void> main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(TransactionAdapter());
+  transactionList = await Hive.openBox('transactions');
   runApp(const MyApp());
 }
 
