@@ -9,12 +9,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/adapters.dart';
 
-late Box transactionList;
+const String transactionsName = 'transactions';
 
 Future<void> main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(TransactionAdapter());
-  transactionList = await Hive.openBox('transactions');
+  await Hive.openBox<Transaction>(transactionsName);
   runApp(const MyApp());
 }
 
@@ -71,12 +71,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _userTransactions = [];
-
-  _deleteTransaction(String id) {
-    setState(() {
-      _userTransactions.removeWhere((transaction) => transaction.id == id);
-    });
+  _deleteTransaction(int index) {
+    final box = Hive.box<Transaction>(transactionsName);
+    box.deleteAt(index);
   }
 
   _addNewTransaction(String title, int amount, DateTime date) {
@@ -86,9 +83,8 @@ class _MyHomePageState extends State<MyHomePage> {
       amount: amount,
       date: date,
     );
-    setState(() {
-      _userTransactions.add(newTx);
-    });
+    var box = Hive.box<Transaction>(transactionsName);
+    box.add(newTx);
   }
 
   _startAddNewTransaction(BuildContext ctx) {
@@ -106,7 +102,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   List<Transaction> get _recentTransactions {
     var sevenDaysAgo = DateTime.now().subtract(const Duration(days: 7));
-    return _userTransactions
+    var box = Hive.box<Transaction>(transactionsName);
+    return box.values
         .where((element) => element.date.isAfter(sevenDaysAgo))
         .toList();
   }
@@ -181,43 +178,47 @@ class _MyHomePageState extends State<MyHomePage> {
     );
 
     // メインコンテンツ
-    final appBody = Column(
-      children: <Widget>[
-        SizedBox(
-          height: getChartUpperSpace(
-              mediaQuery,
-              isLandscape,
-              Platform.isIOS,
-              appBarForIOS.preferredSize.height,
-              appBarForAndroid.preferredSize.height),
-        ),
-        // チャート表示部
-        isLandscape
-            ? Container()
-            : SizedBox(
-                height: getChartHeight(
+    final appBody = ValueListenableBuilder(
+        valueListenable: Hive.box<Transaction>(transactionsName).listenable(),
+        builder: (context, Box<Transaction> box, _) {
+          return Column(
+            children: <Widget>[
+              SizedBox(
+                height: getChartUpperSpace(
                     mediaQuery,
+                    isLandscape,
                     Platform.isIOS,
                     appBarForIOS.preferredSize.height,
                     appBarForAndroid.preferredSize.height),
-                child: Chart(_recentTransactions),
               ),
-        // トランザクションリスト表示部
-        SizedBox(
-          height: getTransactionListHeight(
-              mediaQuery,
-              isLandscape,
-              Platform.isIOS,
-              appBarForIOS.preferredSize.height,
-              appBarForAndroid.preferredSize.height),
-          child: TransactionList(
-            _userTransactions,
-            _deleteTransaction,
-            isLandscape,
-          ),
-        ),
-      ],
-    );
+              // チャート表示部
+              isLandscape
+                  ? Container()
+                  : SizedBox(
+                      height: getChartHeight(
+                          mediaQuery,
+                          Platform.isIOS,
+                          appBarForIOS.preferredSize.height,
+                          appBarForAndroid.preferredSize.height),
+                      child: Chart(_recentTransactions),
+                    ),
+              // トランザクションリスト表示部
+              SizedBox(
+                height: getTransactionListHeight(
+                    mediaQuery,
+                    isLandscape,
+                    Platform.isIOS,
+                    appBarForIOS.preferredSize.height,
+                    appBarForAndroid.preferredSize.height),
+                child: TransactionList(
+                  box.values.toList(),
+                  _deleteTransaction,
+                  isLandscape,
+                ),
+              ),
+            ],
+          );
+        });
 
     return Platform.isIOS
         ? CupertinoPageScaffold(

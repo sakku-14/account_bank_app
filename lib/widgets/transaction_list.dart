@@ -3,9 +3,11 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 import '../models/transaction.dart';
+// import '../models/transactions.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
+  // final Transactions transactions;
   final Function deleteTransaction;
   final bool isLandscape;
 
@@ -40,7 +42,7 @@ class TransactionList extends StatelessWidget {
           DateFormat.yMMMd('ja').format(transactions[index].date),
         ),
         trailing: IconButton(
-          onPressed: () => deleteTransaction(transactions[index].id),
+          onPressed: () => deleteTransaction(index),
           icon: const Icon(Icons.delete),
         ),
       ),
