@@ -14,24 +14,41 @@ class Chart extends StatelessWidget {
   List<Map<String, Object>> get daylyTransactionList {
     return List.generate(7, (index) {
       initializeDateFormatting('ja');
-      final formatOfDayOfWeek = DateFormat.E('ja');
-      final theDay = DateTime.now().subtract(Duration(days: index));
       var dayAmount = 0;
 
       for (var transaction in recentTransactions) {
         // 同じ曜日のみ集計
-        if (transaction.date.weekday == theDay.weekday) {
+        if (transaction.date.weekday == index + 1) {
           dayAmount += transaction.amount;
         }
       }
 
       return {
-        'day': formatOfDayOfWeek
-            .format(DateTime.now().subtract(Duration(days: index)))
-            .toString(),
+        'day': getWeekday(index + 1),
         'amount': dayAmount,
       };
     }).toList();
+  }
+
+  String getWeekday(int weekday) {
+    switch (weekday) {
+      case 1:
+        return '月';
+      case 2:
+        return '火';
+      case 3:
+        return '水';
+      case 4:
+        return '木';
+      case 5:
+        return '金';
+      case 6:
+        return '土';
+      case 7:
+        return '日';
+      default:
+        return '';
+    }
   }
 
   int get totalSpending {

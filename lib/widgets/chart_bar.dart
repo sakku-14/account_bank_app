@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ChartBar extends StatelessWidget {
   final String label;
@@ -15,6 +16,15 @@ class ChartBar extends StatelessWidget {
       return '${(spendingAmount / 10000).toStringAsFixed(0)}万';
     }
     return '${(spendingAmount / 10000).toStringAsFixed(1)}万';
+  }
+
+  bool isToday(String weekday) {
+    final formatOfDayOfWeek = DateFormat.E('ja');
+    final weekdayOfToday = formatOfDayOfWeek.format(DateTime.now()).toString();
+    if (weekdayOfToday == weekday) {
+      return true;
+    }
+    return false;
   }
 
   @override
@@ -58,7 +68,13 @@ class ChartBar extends StatelessWidget {
     );
 
     // 曜日
-    final weekDay = Text(label);
+    final weekDay = Text(
+      label,
+      style: TextStyle(
+        color: isToday(label) ? Theme.of(context).colorScheme.secondary : null,
+        fontWeight: isToday(label) ? FontWeight.bold : null,
+      ),
+    );
 
     return Column(
       children: <Widget>[
