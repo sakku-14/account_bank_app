@@ -18,13 +18,13 @@ class Chart extends StatelessWidget {
 
       for (var transaction in recentTransactions) {
         // 同じ曜日のみ集計
-        if (transaction.date.weekday == index + 1) {
+        if (transaction.date.weekday == ((index + 6) % 7) + 1) {
           dayAmount += transaction.amount;
         }
       }
 
       return {
-        'day': getWeekday(index + 1),
+        'day': getWeekday(((index + 6) % 7) + 1),
         'amount': dayAmount,
       };
     }).toList();
