@@ -56,7 +56,14 @@ class MyApp extends StatelessWidget {
         Locale("en"),
         Locale("ja"),
       ],
+      // 初期画面
       home: const MyHomePage(title: 'Personal Expense'),
+      // ルーティング
+      routes: <String, WidgetBuilder>{
+        '/home': (BuildContext context) => const MyHomePage(
+              title: 'Personal Expense',
+            ),
+      },
     );
   }
 }
