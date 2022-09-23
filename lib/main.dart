@@ -131,34 +131,24 @@ class _MyHomePageState extends State<MyHomePage> {
     if (isLandscape) {
       if (Platform.isIOS) {
         return mediaQuery.size.height - iosHeight - mediaQuery.padding.top;
-      } else {
-        return mediaQuery.size.height - androidHeight - mediaQuery.padding.top;
       }
+      return mediaQuery.size.height - androidHeight - mediaQuery.padding.top;
     } else {
       if (Platform.isIOS) {
         return (mediaQuery.size.height - iosHeight - mediaQuery.padding.top) *
             0.7;
-      } else {
-        return (mediaQuery.size.height -
-                androidHeight -
-                mediaQuery.padding.top) *
-            0.7;
       }
+      return (mediaQuery.size.height - androidHeight - mediaQuery.padding.top) *
+          0.7;
     }
   }
 
   double getChartUpperSpace(MediaQueryData mediaQuery, bool isLandscape,
       bool isIOS, double iosHeight, double androidHeight) {
-    double height = 0;
     if (isIOS) {
-      height += iosHeight;
-    } else {
-      height += androidHeight;
+      return iosHeight + mediaQuery.padding.top;
     }
-    if (!isLandscape) {
-      height += 20;
-    }
-    return height;
+    return androidHeight + mediaQuery.padding.top;
   }
 
   @override
@@ -207,7 +197,13 @@ class _MyHomePageState extends State<MyHomePage> {
                           Platform.isIOS,
                           appBarForIOS.preferredSize.height,
                           appBarForAndroid.preferredSize.height),
-                      child: Chart(_recentTransactions),
+                      child: Chart(
+                          _recentTransactions,
+                          getChartHeight(
+                              mediaQuery,
+                              Platform.isIOS,
+                              appBarForIOS.preferredSize.height,
+                              appBarForAndroid.preferredSize.height)),
                     ),
               // トランザクションリスト表示部
               SizedBox(

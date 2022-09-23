@@ -5,8 +5,10 @@ class ChartBar extends StatelessWidget {
   final String label;
   final int spendingAmount;
   final double spendingPctOfTotal;
+  final double areaHeight;
 
-  ChartBar(this.label, this.spendingAmount, this.spendingPctOfTotal);
+  ChartBar(this.label, this.spendingAmount, this.spendingPctOfTotal,
+      this.areaHeight);
 
   String get _getShowAmount {
     if (spendingAmount / 1000 < 1) {
@@ -31,20 +33,20 @@ class ChartBar extends StatelessWidget {
   Widget build(BuildContext context) {
     // 消費金額
     final spendAmount = SizedBox(
-      height: 20,
+      height: areaHeight * 0.1,
       child: FittedBox(
         child: Text(_getShowAmount),
       ),
     );
 
     // チャートバー上下マージン
-    const chartBarMargin = SizedBox(
-      height: 4,
+    final chartBarMargin = SizedBox(
+      height: areaHeight * 0.05,
     );
 
     // 消費割合の棒グラフ
     final chartBarGraph = SizedBox(
-      height: 60,
+      height: areaHeight * 0.55,
       width: 10,
       child: Stack(
         children: <Widget>[
@@ -68,11 +70,17 @@ class ChartBar extends StatelessWidget {
     );
 
     // 曜日
-    final weekDay = Text(
-      label,
-      style: TextStyle(
-        color: isToday(label) ? Theme.of(context).colorScheme.secondary : null,
-        fontWeight: isToday(label) ? FontWeight.bold : null,
+    final weekDay = SizedBox(
+      height: areaHeight * 0.1,
+      child: FittedBox(
+        child: Text(
+          label,
+          style: TextStyle(
+            color:
+                isToday(label) ? Theme.of(context).colorScheme.secondary : null,
+            fontWeight: isToday(label) ? FontWeight.bold : null,
+          ),
+        ),
       ),
     );
 

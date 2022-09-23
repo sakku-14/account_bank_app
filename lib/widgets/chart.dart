@@ -7,8 +7,9 @@ import '../models/transaction.dart';
 
 class Chart extends StatelessWidget {
   final List<Transaction> recentTransactions;
+  final double areaHeight;
 
-  Chart(this.recentTransactions);
+  Chart(this.recentTransactions, this.areaHeight);
 
   // 曜日毎の消費金額を集計する
   List<Map<String, Object>> get daylyTransactionList {
@@ -71,6 +72,7 @@ class Chart extends StatelessWidget {
             data['day'].toString(),
             int.parse(data['amount'].toString()),
             totalSpending == 0 ? 0 : (data['amount'] as int) / totalSpending,
+            areaHeight * 0.9,
           ),
         );
       }).toList(),
@@ -78,9 +80,9 @@ class Chart extends StatelessWidget {
 
     return Card(
       elevation: 6,
-      margin: const EdgeInsets.all(20),
+      margin: EdgeInsets.all(areaHeight * 0.05),
       child: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: EdgeInsets.all(areaHeight * 0.05),
         child: chartContents,
       ),
     );
