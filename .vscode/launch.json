@@ -5,6 +5,36 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "iPhone SE (3rd generation) (mobile)",
+            "type": "dart",
+            "request": "launch",
+            "deviceId": "003C68AF-3C30-41E6-BFE7-1E8969AC50E3",
+        },
+        {
+            "name": "iPhone 8 Plus (mobile)",
+            "type": "dart",
+            "request": "launch",
+            "deviceId": "A8252BDF-DBBD-4349-8C6A-53527F2EE412",
+        },
+        {
+            "name": "iPhone 14 Plus (mobile)",
+            "type": "dart",
+            "request": "launch",
+            "deviceId": "838B0067-FA7C-4D8F-89A9-6188DEA696FA",
+        },
+        {
+            "name": "iPad Pro (11-inch) (2nd generation) (mobile)",
+            "type": "dart",
+            "request": "launch",
+            "deviceId": "E13E8270-3BB1-49DE-9F9C-8EE7BEF9D836",
+        },
+        {
+            "name": "iPad Pro (11-inch) (3rd generation) (mobile)",
+            "type": "dart",
+            "request": "launch",
+            "deviceId": "14D0F95A-6639-4CE2-B4C0-DF702BD79081",
+        },
+        {
             "name": "account_book_app",
             "request": "launch",
             "type": "dart"
@@ -20,6 +50,18 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "All Devices",
+            "configurations": [
+                "iPhone SE (3rd generation) (mobile)",
+                "iPhone 8 Plus (mobile)",
+                "iPhone 14 Plus (mobile)",
+                "iPad Pro (11-inch) (2nd generation) (mobile)",
+                "iPad Pro (11-inch) (3rd generation) (mobile)",
+            ],
         }
     ]
 }
