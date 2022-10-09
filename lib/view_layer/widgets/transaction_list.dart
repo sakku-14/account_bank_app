@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../models/transaction.dart';
-// import '../models/transactions.dart';
+import '../../domain_layer/models/transaction_aggregate/transaction.dart';
+import '../../domain_layer/models/transaction_aggregate/transactions.dart';
 
 class TransactionList extends StatelessWidget {
-  final List<Transaction> transactions;
-  // final Transactions transactions;
-  final Function deleteTransaction;
-  final bool isLandscape;
+  // final List<Transaction> transactions;
+  late Transactions transactions;
+  late Function deleteTransaction;
+  late bool isLandscape;
 
-  const TransactionList(
-      this.transactions, this.deleteTransaction, this.isLandscape);
+  TransactionList(List<Transaction> transactions, this.deleteTransaction,
+      this.isLandscape) {
+    this.transactions = Transactions(transactions);
+  }
+
+  // get _sortAmountDownToUpList {
+  //   final List<Transaction> amountUpList = transactions;
+  //   amountUpList.sort((a, b) => a.amount.compareTo(b.amount));
+  //   return amountUpList;
+  // }
 
   String getShowAmount(int amount) {
     if (amount / 1000 < 1) {
@@ -25,6 +33,7 @@ class TransactionList extends StatelessWidget {
 
   // 個別のトランザクション
   Widget eachTransaction(int index) {
+    var showList = transactions.sortDateAscendingList;
     return Card(
       child: ListTile(
         leading: CircleAvatar(
@@ -32,16 +41,19 @@ class TransactionList extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(6),
             child: FittedBox(
-              child: Text(getShowAmount(transactions[index].amount)),
+              // child: Text(getShowAmount(transactions[index].amount)),
+              child: Text(getShowAmount(showList[index].amount)),
             ),
           ),
         ),
-        title: Text(transactions[index].title),
+        // title: Text(transactions[index].title),
+        title: Text(showList[index].title),
         subtitle: Text(
-          DateFormat.yMMMd('ja').format(transactions[index].date),
+          // DateFormat.yMMMd('ja').format(transactions[index].date),
+          DateFormat.yMMMd('ja').format(showList[index].date),
         ),
         trailing: IconButton(
-          onPressed: () => deleteTransaction(index),
+          onPressed: () => deleteTransaction(showList[index]),
           icon: const Icon(Icons.delete),
         ),
       ),
@@ -77,7 +89,7 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return transactions.isEmpty
+    return transactions.getTransactions.isEmpty
         ? LayoutBuilder(builder: (context, constraints) {
             return showEmpty(constraints);
           })
@@ -86,7 +98,7 @@ class TransactionList extends StatelessWidget {
             itemBuilder: (context, index) {
               return eachTransaction(index);
             },
-            itemCount: transactions.length,
+            itemCount: transactions.getTransactions.length,
           );
   }
 }

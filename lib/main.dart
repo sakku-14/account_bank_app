@@ -1,13 +1,14 @@
 import 'dart:io';
 
-import 'package:account_book_app/models/transaction.dart';
-import 'package:account_book_app/widgets/chart.dart';
-import 'package:account_book_app/widgets/new_transaction.dart';
-import 'package:account_book_app/widgets/transaction_list.dart';
+import 'package:account_book_app/view_layer/widgets/chart.dart';
+import 'package:account_book_app/view_layer/widgets/new_transaction.dart';
+import 'package:account_book_app/view_layer/widgets/transaction_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/adapters.dart';
+
+import 'domain_layer/models/transaction_aggregate/transaction.dart';
 
 const String transactionsName = 'transactions';
 
@@ -78,8 +79,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  _deleteTransaction(int index) {
+  _deleteTransaction(Transaction transaction) {
     final box = Hive.box<Transaction>(transactionsName);
+    final int index = box.values.toList().indexOf(transaction);
     box.deleteAt(index);
   }
 

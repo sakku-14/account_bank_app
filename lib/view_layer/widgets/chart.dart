@@ -1,9 +1,8 @@
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
-import 'package:account_book_app/widgets/chart_bar.dart';
 import 'package:flutter/material.dart';
 
-import '../models/transaction.dart';
+import '../../domain_layer/models/transaction_aggregate/transaction.dart';
+import 'chart_bar.dart';
 
 class Chart extends StatelessWidget {
   final List<Transaction> recentTransactions;
