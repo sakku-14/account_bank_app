@@ -15,12 +15,6 @@ class TransactionList extends StatelessWidget {
     this.transactions = Transactions(transactions);
   }
 
-  // get _sortAmountDownToUpList {
-  //   final List<Transaction> amountUpList = transactions;
-  //   amountUpList.sort((a, b) => a.amount.compareTo(b.amount));
-  //   return amountUpList;
-  // }
-
   String getShowAmount(int amount) {
     if (amount / 1000 < 1) {
       return amount.toString();

@@ -42,6 +42,7 @@ class TransactionRepository implements ITransactionRepository {
     }
   }
 
+  // トランザクションの検索
   @override
   Future<Transaction> find(String id) async {
     final Box<Transaction> box = await Hive.openBox<Transaction>(boxName);
