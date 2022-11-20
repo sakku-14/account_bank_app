@@ -1,32 +1,19 @@
+import 'package:account_book_app/view_model_layer/transaction_list/transaction_list_notifier.dart';
+import 'package:account_book_app/view_model_layer/transaction_list/transaction_list_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import '../../domain_layer/models/transaction_aggregate/transaction.dart';
 import '../../domain_layer/models/transaction_aggregate/transactions.dart';
 
-class TransactionList extends StatelessWidget {
-  // final List<Transaction> transactions;
-  late Transactions transactions;
-  late Function deleteTransaction;
-  late bool isLandscape;
+class TransactionList extends ConsumerWidget {
+  final Transactions transactions;
 
-  TransactionList(List<Transaction> transactions, this.deleteTransaction,
-      this.isLandscape) {
-    this.transactions = Transactions(transactions);
-  }
-
-  String getShowAmount(int amount) {
-    if (amount / 1000 < 1) {
-      return amount.toString();
-    }
-    if (amount % 10000 == 0) {
-      return '${(amount / 10000).toStringAsFixed(0)}万';
-    }
-    return '${(amount / 10000).toStringAsFixed(1)}万';
-  }
+  TransactionList(this.transactions, {Key? key}) : super(key: key) {}
 
   // 個別のトランザクション
-  Widget eachTransaction(int index) {
+  Widget eachTransaction(int index, Transactions transactions,
+      Function getShowAmount, Function deleteTransaction) {
     var showList = transactions.sortDateAscendingList;
     return Card(
       child: ListTile(
@@ -82,17 +69,35 @@ class TransactionList extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return transactions.getTransactions.isEmpty
+  Widget build(BuildContext context, WidgetRef ref) {
+    // state
+    final TransactionListState transactionListState =
+        ref.watch(transactionListProvider);
+    // notifier
+    final TransactionListNotifier transactionListNotifier =
+        ref.watch(transactionListProvider.notifier);
+
+    return Transactions(transactionListState.transactionsBox.values.toList())
+            .getTransactions
+            .isEmpty
         ? LayoutBuilder(builder: (context, constraints) {
             return showEmpty(constraints);
           })
         : ListView.builder(
             padding: const EdgeInsets.all(0),
             itemBuilder: (context, index) {
-              return eachTransaction(index);
+              return eachTransaction(
+                index,
+                Transactions(
+                    transactionListState.transactionsBox.values.toList()),
+                transactionListNotifier.getShowAmount,
+                transactionListNotifier.deleteTransaction,
+              );
             },
-            itemCount: transactions.getTransactions.length,
+            itemCount: Transactions(
+                    transactionListState.transactionsBox.values.toList())
+                .getTransactions
+                .length,
           );
   }
 }

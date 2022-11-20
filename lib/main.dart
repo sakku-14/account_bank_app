@@ -68,9 +68,7 @@ class MyApp extends StatelessWidget {
         // '/home': (BuildContext context) => const MyHomePage(
         //       title: 'Personal Expense',
         //     ),
-        '/': (BuildContext context) => const HomePage(
-              'Personal Expense',
-            ),
+        '/': (BuildContext context) => const HomePage(),
       },
     );
   }

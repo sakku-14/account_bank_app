@@ -12,12 +12,6 @@ const String transactionsName = 'transactions';
 class HomePageNotifier extends StateNotifier<HomePageState> {
   HomePageNotifier() : super(const HomePageState());
 
-  void deleteTransaction(Transaction transaction) async {
-    final box = Hive.box<Transaction>(transactionsName);
-    final int index = box.values.toList().indexOf(transaction);
-    box.deleteAt(index);
-  }
-
   void addNewTransaction(String title, int amount, DateTime date) async {
     final newTx = Transaction(
       id: DateTime.now().toString(),
