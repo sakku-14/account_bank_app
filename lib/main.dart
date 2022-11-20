@@ -14,11 +14,11 @@ Future<void> main() async {
   Hive.registerAdapter(TransactionAdapter());
   await Hive.openBox<Transaction>(transactionsName);
 
-  final transactionRepository = Provider<TransactionRepository>((ref) {
-    return TransactionRepository(transactionsName);
-  });
+  // final transactionRepository = Provider<TransactionRepository>((ref) {
+  //   return TransactionRepository(transactionsName);
+  // });
 
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 // class _MyHomePageState extends State<MyHomePage> {
@@ -62,13 +62,13 @@ class MyApp extends StatelessWidget {
         Locale("ja"),
       ],
       // 初期画面
-      home: const HomePage('Personal Expense'),
+      // home: const HomePage('Personal Expense'),
       // ルーティング
       routes: <String, WidgetBuilder>{
         // '/home': (BuildContext context) => const MyHomePage(
         //       title: 'Personal Expense',
         //     ),
-        '/home': (BuildContext context) => const HomePage(
+        '/': (BuildContext context) => const HomePage(
               'Personal Expense',
             ),
       },
