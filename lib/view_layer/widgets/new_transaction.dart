@@ -1,99 +1,45 @@
+import 'package:account_book_app/view_model_layer/new_transaction/new_transaction_notifier.dart';
+import 'package:account_book_app/view_model_layer/new_transaction/new_transaction_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 
-class NewTransaction extends StatefulWidget {
+class NewTransaction extends ConsumerStatefulWidget {
   final Function addTx;
 
-  const NewTransaction(this.addTx);
+  const NewTransaction(this.addTx, {Key? key}) : super(key: key);
 
   @override
-  State<NewTransaction> createState() => _NewTransactionState();
+  _NewTransactionState createState() => _NewTransactionState();
 }
 
-class _NewTransactionState extends State<NewTransaction> {
-  final _titleController = TextEditingController();
-  final _amountController = TextEditingController();
-  DateTime? _selectedDate;
-
-  void _submitData() {
-    if (_amountController.text.isEmpty) {
-      return;
-    }
-    final enteredTitle = _titleController.text;
-    final enteredAmount = int.parse(_amountController.text);
-
-    if (enteredTitle.isEmpty || enteredAmount <= 0 || _selectedDate == null) {
-      return;
-    }
-
-    widget.addTx(enteredTitle, enteredAmount, _selectedDate);
-
-    Navigator.of(context).pop();
-  }
-
-  void _presentDatePicker() {
-    FocusScope.of(context).unfocus();
-    showDatePicker(
-      locale: const Locale('ja'),
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2022),
-      lastDate: DateTime.now(),
-    ).then((pickedDate) {
-      if (pickedDate == null) {
-        return;
-      }
-      setState(() {
-        _selectedDate = pickedDate;
-      });
-    });
-  }
-
-  // Custom widget for TextField
-  final FocusNode _nodeTitle = FocusNode();
-  final FocusNode _nodeAmount = FocusNode();
-
-  KeyboardActionsConfig _buildConfig() {
-    return KeyboardActionsConfig(
-      keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
-      keyboardBarColor: Colors.grey[200],
-      nextFocus: true,
-      actions: [
-        KeyboardActionsItem(focusNode: _nodeTitle, toolbarButtons: [
-          // 完了ボタン
-          (node) {
-            return GestureDetector(
-              onTap: () => node.unfocus(),
-              child: const Text('完了'),
-            );
-          },
-        ]),
-        KeyboardActionsItem(focusNode: _nodeAmount, toolbarButtons: [
-          // 完了ボタン
-          (node) {
-            return GestureDetector(
-              onTap: () => node.unfocus(),
-              child: const Text('完了'),
-            );
-          },
-        ]),
-      ],
-    );
+class _NewTransactionState extends ConsumerState<NewTransaction> {
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    // state
+    final NewTransactionState newTransactionState =
+        ref.watch(newTransactionProvider);
+    // notifier
+    final NewTransactionNotifier newTransactionNotifier =
+        ref.watch(newTransactionProvider.notifier);
+
     // 商品名入力欄
     final itemTitle = SizedBox(
       height: 60,
       child: KeyboardActions(
-        config: _buildConfig(),
+        config: newTransactionNotifier.buildConfig(),
         child: TextField(
-          focusNode: _nodeTitle,
+          focusNode: newTransactionState.nodeTitle,
           decoration: const InputDecoration(labelText: 'タイトル'),
-          controller: _titleController,
-          onSubmitted: (_) => _submitData(),
+          controller: newTransactionState.titleController,
+          onSubmitted: (_) =>
+              newTransactionNotifier.submitData(widget.addTx, context),
         ),
       ),
     );
@@ -102,13 +48,14 @@ class _NewTransactionState extends State<NewTransaction> {
     final itemAmount = SizedBox(
       height: 60,
       child: KeyboardActions(
-        config: _buildConfig(),
+        config: newTransactionNotifier.buildConfig(),
         child: TextField(
-          focusNode: _nodeAmount,
+          focusNode: newTransactionState.nodeAmount,
           keyboardType: TextInputType.number,
           decoration: const InputDecoration(labelText: '金額'),
-          controller: _amountController,
-          onSubmitted: (_) => _submitData(),
+          controller: newTransactionState.amountController,
+          onSubmitted: (_) =>
+              newTransactionNotifier.submitData(widget.addTx, context),
         ),
       ),
     );
@@ -120,13 +67,10 @@ class _NewTransactionState extends State<NewTransaction> {
         children: <Widget>[
           Expanded(
             child: Text(
-              _selectedDate == null
-                  ? '日付を選択してください'
-                  : '日付: ${DateFormat.yMd('ja').format(_selectedDate!)}',
-            ),
+                '日付: ${DateFormat.yMd('ja').format(newTransactionState.selectedDate)}'),
           ),
           TextButton(
-            onPressed: _presentDatePicker,
+            onPressed: () => newTransactionNotifier.presentDatePicker(context),
             child: const Text(
               '日付を選択',
               style: TextStyle(fontWeight: FontWeight.bold),
@@ -138,7 +82,7 @@ class _NewTransactionState extends State<NewTransaction> {
 
     // 登録ボタン
     final registerButton = ElevatedButton(
-      onPressed: _submitData,
+      onPressed: () => newTransactionNotifier.submitData(widget.addTx, context),
       child: const Text('追加'),
     );
 

@@ -1,7 +1,8 @@
+import 'package:account_book_app/view_model_layer/chart_bar/chart_bar_notifier.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ChartBar extends StatelessWidget {
+class ChartBar extends ConsumerWidget {
   final String label;
   final int spendingAmount;
   final double spendingPctOfTotal;
@@ -10,32 +11,17 @@ class ChartBar extends StatelessWidget {
   ChartBar(this.label, this.spendingAmount, this.spendingPctOfTotal,
       this.areaHeight);
 
-  String get _getShowAmount {
-    if (spendingAmount / 1000 < 1) {
-      return spendingAmount.toString();
-    }
-    if (spendingAmount % 10000 == 0) {
-      return '${(spendingAmount / 10000).toStringAsFixed(0)}万';
-    }
-    return '${(spendingAmount / 10000).toStringAsFixed(1)}万';
-  }
-
-  bool isToday(String weekday) {
-    final formatOfDayOfWeek = DateFormat.E('ja');
-    final weekdayOfToday = formatOfDayOfWeek.format(DateTime.now()).toString();
-    if (weekdayOfToday == weekday) {
-      return true;
-    }
-    return false;
-  }
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // notifier
+    final ChartBarNotifier chartBarNotifier =
+        ref.watch(chartBarProvider.notifier);
+
     // 消費金額
     final spendAmount = SizedBox(
       height: areaHeight * 0.1,
       child: FittedBox(
-        child: Text(_getShowAmount),
+        child: Text(chartBarNotifier.getShowAmount(spendingAmount)),
       ),
     );
 
@@ -76,9 +62,8 @@ class ChartBar extends StatelessWidget {
         child: Text(
           label,
           style: TextStyle(
-            color:
-                isToday(label) ? Theme.of(context).colorScheme.secondary : null,
-            fontWeight: isToday(label) ? FontWeight.bold : null,
+            color: chartBarNotifier.getWeekDayColor(context, label),
+            fontWeight: chartBarNotifier.getWeekDayFontWeight(label),
           ),
         ),
       ),

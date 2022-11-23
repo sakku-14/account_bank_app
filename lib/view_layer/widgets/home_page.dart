@@ -1,4 +1,5 @@
 import 'package:account_book_app/domain_layer/models/transaction_aggregate/transaction.dart';
+import 'package:account_book_app/domain_layer/models/transaction_aggregate/transactions.dart';
 import 'package:account_book_app/view_model_layer/home_page/home_page_notifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -67,13 +68,11 @@ class HomePage extends ConsumerWidget {
                           Platform.isIOS,
                           appBarForIOS.preferredSize.height,
                           appBarForAndroid.preferredSize.height),
-                      child: Chart(
-                          homePageNotifier.recentTransactions(),
-                          homePageNotifier.getChartHeight(
-                              mediaQuery,
-                              Platform.isIOS,
-                              appBarForIOS.preferredSize.height,
-                              appBarForAndroid.preferredSize.height)),
+                      child: Chart(homePageNotifier.getChartHeight(
+                          mediaQuery,
+                          Platform.isIOS,
+                          appBarForIOS.preferredSize.height,
+                          appBarForAndroid.preferredSize.height)),
                     ),
               // トランザクションリスト表示部
               SizedBox(
@@ -84,9 +83,7 @@ class HomePage extends ConsumerWidget {
                     appBarForIOS.preferredSize.height,
                     appBarForAndroid.preferredSize.height),
                 child: TransactionList(
-                  box.values.toList(),
-                  homePageNotifier.deleteTransaction,
-                  isLandscape,
+                  Transactions(box.values.toList()),
                 ),
               ),
             ],
