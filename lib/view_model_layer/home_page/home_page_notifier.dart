@@ -36,14 +36,6 @@ class HomePageNotifier extends StateNotifier<HomePageState> {
     );
   }
 
-  List<Transaction> recentTransactions() {
-    var sevenDaysAgo = DateTime.now().subtract(const Duration(days: 7));
-    var box = Hive.box<Transaction>(transactionsName);
-    return box.values
-        .where((element) => element.date.isAfter(sevenDaysAgo))
-        .toList();
-  }
-
   double getChartHeight(MediaQueryData mediaQuery, bool isIOS, double iosHeight,
       double androidHeight) {
     if (isIOS) {

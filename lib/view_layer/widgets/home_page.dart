@@ -68,13 +68,11 @@ class HomePage extends ConsumerWidget {
                           Platform.isIOS,
                           appBarForIOS.preferredSize.height,
                           appBarForAndroid.preferredSize.height),
-                      child: Chart(
-                          homePageNotifier.recentTransactions(),
-                          homePageNotifier.getChartHeight(
-                              mediaQuery,
-                              Platform.isIOS,
-                              appBarForIOS.preferredSize.height,
-                              appBarForAndroid.preferredSize.height)),
+                      child: Chart(homePageNotifier.getChartHeight(
+                          mediaQuery,
+                          Platform.isIOS,
+                          appBarForIOS.preferredSize.height,
+                          appBarForAndroid.preferredSize.height)),
                     ),
               // トランザクションリスト表示部
               SizedBox(
