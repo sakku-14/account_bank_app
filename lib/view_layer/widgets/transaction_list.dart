@@ -22,15 +22,12 @@ class TransactionList extends ConsumerWidget {
           child: Padding(
             padding: const EdgeInsets.all(6),
             child: FittedBox(
-              // child: Text(getShowAmount(transactions[index].amount)),
               child: Text(getShowAmount(showList[index].amount)),
             ),
           ),
         ),
-        // title: Text(transactions[index].title),
         title: Text(showList[index].title),
         subtitle: Text(
-          // DateFormat.yMMMd('ja').format(transactions[index].date),
           DateFormat.yMMMd('ja').format(showList[index].date),
         ),
         trailing: IconButton(
