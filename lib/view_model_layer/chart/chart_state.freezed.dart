@@ -16,7 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ChartState {
-  Box<Transaction> get transactionsBox => throw _privateConstructorUsedError;
+  ITransactionRepository get transactionRepository =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ChartStateCopyWith<ChartState> get copyWith =>
@@ -29,7 +30,7 @@ abstract class $ChartStateCopyWith<$Res> {
           ChartState value, $Res Function(ChartState) then) =
       _$ChartStateCopyWithImpl<$Res, ChartState>;
   @useResult
-  $Res call({Box<Transaction> transactionsBox});
+  $Res call({ITransactionRepository transactionRepository});
 }
 
 /// @nodoc
@@ -45,13 +46,13 @@ class _$ChartStateCopyWithImpl<$Res, $Val extends ChartState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? transactionsBox = null,
+    Object? transactionRepository = null,
   }) {
     return _then(_value.copyWith(
-      transactionsBox: null == transactionsBox
-          ? _value.transactionsBox
-          : transactionsBox // ignore: cast_nullable_to_non_nullable
-              as Box<Transaction>,
+      transactionRepository: null == transactionRepository
+          ? _value.transactionRepository
+          : transactionRepository // ignore: cast_nullable_to_non_nullable
+              as ITransactionRepository,
     ) as $Val);
   }
 }
@@ -64,7 +65,7 @@ abstract class _$$_ChartStateCopyWith<$Res>
       __$$_ChartStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Box<Transaction> transactionsBox});
+  $Res call({ITransactionRepository transactionRepository});
 }
 
 /// @nodoc
@@ -78,13 +79,13 @@ class __$$_ChartStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? transactionsBox = null,
+    Object? transactionRepository = null,
   }) {
     return _then(_$_ChartState(
-      transactionsBox: null == transactionsBox
-          ? _value.transactionsBox
-          : transactionsBox // ignore: cast_nullable_to_non_nullable
-              as Box<Transaction>,
+      transactionRepository: null == transactionRepository
+          ? _value.transactionRepository
+          : transactionRepository // ignore: cast_nullable_to_non_nullable
+              as ITransactionRepository,
     ));
   }
 }
@@ -92,14 +93,14 @@ class __$$_ChartStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_ChartState with DiagnosticableTreeMixin implements _ChartState {
-  const _$_ChartState({required this.transactionsBox});
+  const _$_ChartState({required this.transactionRepository});
 
   @override
-  final Box<Transaction> transactionsBox;
+  final ITransactionRepository transactionRepository;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ChartState(transactionsBox: $transactionsBox)';
+    return 'ChartState(transactionRepository: $transactionRepository)';
   }
 
   @override
@@ -107,7 +108,8 @@ class _$_ChartState with DiagnosticableTreeMixin implements _ChartState {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ChartState'))
-      ..add(DiagnosticsProperty('transactionsBox', transactionsBox));
+      ..add(
+          DiagnosticsProperty('transactionRepository', transactionRepository));
   }
 
   @override
@@ -115,12 +117,12 @@ class _$_ChartState with DiagnosticableTreeMixin implements _ChartState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ChartState &&
-            (identical(other.transactionsBox, transactionsBox) ||
-                other.transactionsBox == transactionsBox));
+            (identical(other.transactionRepository, transactionRepository) ||
+                other.transactionRepository == transactionRepository));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, transactionsBox);
+  int get hashCode => Object.hash(runtimeType, transactionRepository);
 
   @JsonKey(ignore: true)
   @override
@@ -130,11 +132,12 @@ class _$_ChartState with DiagnosticableTreeMixin implements _ChartState {
 }
 
 abstract class _ChartState implements ChartState {
-  const factory _ChartState({required final Box<Transaction> transactionsBox}) =
+  const factory _ChartState(
+          {required final ITransactionRepository transactionRepository}) =
       _$_ChartState;
 
   @override
-  Box<Transaction> get transactionsBox;
+  ITransactionRepository get transactionRepository;
   @override
   @JsonKey(ignore: true)
   _$$_ChartStateCopyWith<_$_ChartState> get copyWith =>

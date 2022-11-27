@@ -5,4 +5,5 @@ abstract class ITransactionRepository {
   Future<void> deleteTransaction(Transaction transaction);
   Future<void> updateTransaction(Transaction transaction);
   Future<Transaction> find(String id);
+  Future<Iterable<Transaction>> findAll();
 }

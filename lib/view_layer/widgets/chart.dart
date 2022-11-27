@@ -18,19 +18,34 @@ class Chart extends ConsumerWidget {
     final ChartNotifier chartNotifier = ref.watch(chartProvider.notifier);
 
     // 一週間分のチャート部
-    final chartContents = Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: chartNotifier.dailyTransactionList().map((data) {
-        return Flexible(
-          fit: FlexFit.tight,
-          child: ChartBar(
-            data['day'].toString(),
-            int.parse(data['amount'].toString()),
-            chartNotifier.getSpendRateForWeek(data['amount'] as int),
-            areaHeight * 0.9,
-          ),
+    final chartContents = FutureBuilder<List<Map<String, dynamic>>>(
+      future: chartNotifier.dailyTransactionList(),
+      builder: (BuildContext context,
+          AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: snapshot.hasData
+              ? snapshot.data!.map((data) {
+                  return Flexible(
+                    fit: FlexFit.tight,
+                    child: FutureBuilder<double>(
+                      future: chartNotifier
+                          .getSpendRateForWeek(data['amount'] as int),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<double> snapshot) {
+                        return ChartBar(
+                          data['day'].toString(),
+                          int.parse(data['amount'].toString()),
+                          snapshot.hasData ? snapshot.data! : 0,
+                          areaHeight * 0.9,
+                        );
+                      },
+                    ),
+                  );
+                }).toList()
+              : <Text>[const Text('チャート情報取得エラー')],
         );
-      }).toList(),
+      },
     );
 
     return Card(

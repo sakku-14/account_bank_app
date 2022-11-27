@@ -1,8 +1,9 @@
+import 'package:account_book_app/domain_layer/models/transaction_aggregate/transactions.dart';
+import 'package:account_book_app/infrastructure_layer/interfaces/i_transaction_repository.dart';
 import 'package:hive/hive.dart';
 
 import '../../../domain_layer/domain_exception.dart';
 import '../../../domain_layer/models/transaction_aggregate/transaction.dart';
-import '../../interfaces/i_transaction_repository.dart';
 
 class TransactionRepository implements ITransactionRepository {
   late final String boxName;
@@ -55,6 +56,19 @@ class TransactionRepository implements ITransactionRepository {
     }
   }
 
+  // トランザクションの全検索
+  @override
+  Future<Iterable<Transaction>> findAll() async {
+    final Box<Transaction> box = await Hive.openBox<Transaction>(boxName);
+    try {
+      var transactions = box.values;
+      return transactions.map((e) => _clone(e));
+    } on HiveError catch (e) {
+      throw DomainException(e.message);
+    }
+  }
+
+  // インスタンスのクローン
   Transaction _clone(Transaction transaction) {
     return Transaction(
       id: transaction.id,

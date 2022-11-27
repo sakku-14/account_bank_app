@@ -1,7 +1,7 @@
 import 'package:account_book_app/domain_layer/models/transaction_aggregate/transaction.dart';
+import 'package:account_book_app/domain_layer/repositories/transaction_aggregate/transaction_repository.dart';
 import 'package:account_book_app/view_model_layer/chart/chart_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive/hive.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 const String transactionsName = 'transactions';
@@ -9,11 +9,12 @@ const String transactionsName = 'transactions';
 class ChartNotifier extends StateNotifier<ChartState> {
   ChartNotifier()
       : super(ChartState(
-            transactionsBox: Hive.box<Transaction>(transactionsName)));
+            transactionRepository: TransactionRepository(transactionsName)));
 
-  List<Transaction> recentTransactions() {
+  Future<List<Transaction>> recentTransactions() async {
     var sevenDaysAgo = DateTime.now().subtract(const Duration(days: 7));
-    return state.transactionsBox.values
+    var transactions = await state.transactionRepository.findAll();
+    return transactions
         .where((element) => element.date.isAfter(sevenDaysAgo))
         .toList();
   }
@@ -40,12 +41,14 @@ class ChartNotifier extends StateNotifier<ChartState> {
   }
 
   // 曜日毎の消費金額を集計する
-  List<Map<String, dynamic>> dailyTransactionList() {
+  Future<List<Map<String, dynamic>>> dailyTransactionList() async {
+    var recentTransactions = await this.recentTransactions();
+
     return List.generate(7, (index) {
       initializeDateFormatting('ja');
       var dayAmount = 0;
 
-      for (var transaction in recentTransactions()) {
+      for (var transaction in recentTransactions) {
         // 同じ曜日のみ集計
         if (transaction.date.weekday == ((index + 6) % 7) + 1) {
           dayAmount += transaction.amount;
@@ -59,16 +62,18 @@ class ChartNotifier extends StateNotifier<ChartState> {
     }).toList();
   }
 
-  int totalSpending() {
+  Future<int> totalSpending() async {
     var total = 0;
-    for (var transaction in recentTransactions()) {
+    var recentTransactions = await this.recentTransactions();
+
+    for (var transaction in recentTransactions) {
       total += transaction.amount;
     }
     return total;
   }
 
-  double getSpendRateForWeek(int spendAmount) {
-    int amountForWeek = totalSpending();
+  Future<double> getSpendRateForWeek(int spendAmount) async {
+    int amountForWeek = await totalSpending();
     if (amountForWeek == 0) {
       return 0;
     }
