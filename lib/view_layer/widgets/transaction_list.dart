@@ -1,3 +1,4 @@
+import 'package:account_book_app/domain_layer/models/transaction_aggregate/transaction.dart';
 import 'package:account_book_app/view_model_layer/transaction_list/transaction_list_notifier.dart';
 import 'package:account_book_app/view_model_layer/transaction_list/transaction_list_state.dart';
 import 'package:flutter/material.dart';
@@ -74,27 +75,30 @@ class TransactionList extends ConsumerWidget {
     final TransactionListNotifier transactionListNotifier =
         ref.watch(transactionListProvider.notifier);
 
-    return Transactions(transactionListState.transactionsBox.values.toList())
-            .getTransactions
-            .isEmpty
-        ? LayoutBuilder(builder: (context, constraints) {
-            return showEmpty(constraints);
-          })
-        : ListView.builder(
-            padding: const EdgeInsets.all(0),
-            itemBuilder: (context, index) {
-              return eachTransaction(
-                index,
-                Transactions(
-                    transactionListState.transactionsBox.values.toList()),
-                transactionListNotifier.getShowAmount,
-                transactionListNotifier.deleteTransaction,
+    return FutureBuilder<Iterable<Transaction>>(
+      future: transactionListState.transactionRepository.findAll(),
+      builder: (BuildContext context,
+          AsyncSnapshot<Iterable<Transaction>> snapshot) {
+        return snapshot.data == null ||
+                Transactions(snapshot.data!.toList()).getTransactions.isEmpty
+            ? LayoutBuilder(builder: (context, constraints) {
+                return showEmpty(constraints);
+              })
+            : ListView.builder(
+                padding: const EdgeInsets.all(0),
+                itemBuilder: (context, index) {
+                  return eachTransaction(
+                    index,
+                    Transactions(snapshot.data!.toList()),
+                    transactionListNotifier.getShowAmount,
+                    transactionListNotifier.deleteTransaction,
+                  );
+                },
+                itemCount: Transactions(snapshot.data!.toList())
+                    .getTransactions
+                    .length,
               );
-            },
-            itemCount: Transactions(
-                    transactionListState.transactionsBox.values.toList())
-                .getTransactions
-                .length,
-          );
+      },
+    );
   }
 }

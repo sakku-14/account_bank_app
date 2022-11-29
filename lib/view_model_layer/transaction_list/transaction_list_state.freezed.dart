@@ -16,7 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$TransactionListState {
-  Box<Transaction> get transactionsBox => throw _privateConstructorUsedError;
+  ITransactionRepository get transactionRepository =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $TransactionListStateCopyWith<TransactionListState> get copyWith =>
@@ -29,7 +30,7 @@ abstract class $TransactionListStateCopyWith<$Res> {
           $Res Function(TransactionListState) then) =
       _$TransactionListStateCopyWithImpl<$Res, TransactionListState>;
   @useResult
-  $Res call({Box<Transaction> transactionsBox});
+  $Res call({ITransactionRepository transactionRepository});
 }
 
 /// @nodoc
@@ -46,13 +47,13 @@ class _$TransactionListStateCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? transactionsBox = null,
+    Object? transactionRepository = null,
   }) {
     return _then(_value.copyWith(
-      transactionsBox: null == transactionsBox
-          ? _value.transactionsBox
-          : transactionsBox // ignore: cast_nullable_to_non_nullable
-              as Box<Transaction>,
+      transactionRepository: null == transactionRepository
+          ? _value.transactionRepository
+          : transactionRepository // ignore: cast_nullable_to_non_nullable
+              as ITransactionRepository,
     ) as $Val);
   }
 }
@@ -65,7 +66,7 @@ abstract class _$$_TransactionListStateCopyWith<$Res>
       __$$_TransactionListStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Box<Transaction> transactionsBox});
+  $Res call({ITransactionRepository transactionRepository});
 }
 
 /// @nodoc
@@ -79,13 +80,13 @@ class __$$_TransactionListStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? transactionsBox = null,
+    Object? transactionRepository = null,
   }) {
     return _then(_$_TransactionListState(
-      transactionsBox: null == transactionsBox
-          ? _value.transactionsBox
-          : transactionsBox // ignore: cast_nullable_to_non_nullable
-              as Box<Transaction>,
+      transactionRepository: null == transactionRepository
+          ? _value.transactionRepository
+          : transactionRepository // ignore: cast_nullable_to_non_nullable
+              as ITransactionRepository,
     ));
   }
 }
@@ -95,14 +96,14 @@ class __$$_TransactionListStateCopyWithImpl<$Res>
 class _$_TransactionListState
     with DiagnosticableTreeMixin
     implements _TransactionListState {
-  _$_TransactionListState({required this.transactionsBox});
+  _$_TransactionListState({required this.transactionRepository});
 
   @override
-  final Box<Transaction> transactionsBox;
+  final ITransactionRepository transactionRepository;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'TransactionListState(transactionsBox: $transactionsBox)';
+    return 'TransactionListState(transactionRepository: $transactionRepository)';
   }
 
   @override
@@ -110,7 +111,8 @@ class _$_TransactionListState
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'TransactionListState'))
-      ..add(DiagnosticsProperty('transactionsBox', transactionsBox));
+      ..add(
+          DiagnosticsProperty('transactionRepository', transactionRepository));
   }
 
   @override
@@ -118,12 +120,12 @@ class _$_TransactionListState
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_TransactionListState &&
-            (identical(other.transactionsBox, transactionsBox) ||
-                other.transactionsBox == transactionsBox));
+            (identical(other.transactionRepository, transactionRepository) ||
+                other.transactionRepository == transactionRepository));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, transactionsBox);
+  int get hashCode => Object.hash(runtimeType, transactionRepository);
 
   @JsonKey(ignore: true)
   @override
@@ -135,11 +137,11 @@ class _$_TransactionListState
 
 abstract class _TransactionListState implements TransactionListState {
   factory _TransactionListState(
-          {required final Box<Transaction> transactionsBox}) =
+          {required final ITransactionRepository transactionRepository}) =
       _$_TransactionListState;
 
   @override
-  Box<Transaction> get transactionsBox;
+  ITransactionRepository get transactionRepository;
   @override
   @JsonKey(ignore: true)
   _$$_TransactionListStateCopyWith<_$_TransactionListState> get copyWith =>
